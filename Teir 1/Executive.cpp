@@ -56,6 +56,17 @@ string Executive::pwd(){
     return std::filesystem::current_path().generic_string();
 }
 
+string Executive::ls(){
+    string output;
+    string temp;
+    string path=pwd();
+    for (const auto & entry : filesystem::directory_iterator(path)){
+        temp= entry.path().filename().generic_string();
+        output = output + ' ' + temp;
+    }
+    return output;
+}
+
 bool Executive::cmdInputHandler(string input){
     string cmd;
     
@@ -68,6 +79,9 @@ bool Executive::cmdInputHandler(string input){
         }
         if(cmd == "pwd"){
             cout<<pwd();
+        }
+        if(cmd == "ls"){
+            cout<<ls();
         }
         if((cmd == "quit") || (cmd == "exit")){
             return 1;
