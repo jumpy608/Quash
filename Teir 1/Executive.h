@@ -14,6 +14,7 @@ class Executive{
 	    string echo(string input);
 	    string pwd();
 	    string ls();
+	    string cleanCom(string input);
 	    bool cmdInputHandler(string input);
         int run();
 };
