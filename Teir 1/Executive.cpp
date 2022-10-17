@@ -5,6 +5,8 @@
 using namespace std;
 
 string Executive::echo(string input){
+    cout<<input;
+    
     bool inQuotes = 0;
     char quotesChar;
     bool inEnviromentVarName = 0;
@@ -67,8 +69,40 @@ string Executive::ls(){
     return output;
 }
 
+string Executive::cleanCom(string input){ //cleans the input of comments
+    string output;
+    bool inQuotes=0;
+    char quotesChar;
+    
+    for(int i=0; i<input.length(); i++){
+        
+        if(inQuotes == 1){  //checks if we exit the curent string in quotes before looking for other special chars
+            if(input.at(i) == quotesChar){
+                inQuotes = 0;
+            }
+            output=output+input.at(i);
+        }
+        else if((input.at(i) == '\"')||(input.at(i) == '\'')){  //enteres an element surrounded in quotes
+            inQuotes=1;
+            quotesChar= input.at(i);
+            output=output+input.at(i);
+        }
+        else if(input.at(i) == '#'){    //recgnizes that the rest of the input is a commet and breaks from the loop
+            break;
+        }
+        else{   //adds current char to the output string
+            output=output+input.at(i);
+        }
+    }
+    
+    return output;
+}
+
+
 bool Executive::cmdInputHandler(string input){
     string cmd;
+    
+    input=cleanCom(input);
     
     for(int i=0; i<input.length(); i++){ //checks for first valid command then runs corrisponding fn
         cmd=cmd + input.at(i); 
