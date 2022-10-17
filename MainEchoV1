@@ -1,0 +1,49 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+string echo(string input){
+    bool inQuotes = 0;
+    char quotesChar;
+    string output;
+    
+    for(int i=0; i<input.length(); i++){
+        if(inQuotes == 1){
+            if(input.at(i) == quotesChar){
+                inQuotes = 0;
+            }
+            else{
+                output=output+input.at(i);
+            }
+        }
+        else if(input.at(i) == '"'){
+            inQuotes=1;
+            quotesChar= '"';
+        }
+        else if(input.at(i) == '\''){
+            inQuotes=1;
+            quotesChar= '\'';
+        }
+        else if(input.at(i) == '#'){
+            break;
+        }
+        else{
+            output=output+input.at(i);
+        }
+    }
+    return output;
+    
+}
+
+
+int main()
+{
+    string path;
+    string home;
+    string current;
+    
+    string temp = "hello \'world\' # this should print hello world";
+    cout<<temp<<"\n\n";
+    cout<<echo(temp);
+    return 0;
+}
