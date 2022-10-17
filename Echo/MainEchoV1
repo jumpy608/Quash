@@ -8,7 +8,8 @@ string echo(string input){
     string output;
     
     for(int i=0; i<input.length(); i++){
-        if(inQuotes == 1){
+        
+        if(inQuotes == 1){  //checks if we exit the curent string in quotes before looking for other special chars
             if(input.at(i) == quotesChar){
                 inQuotes = 0;
             }
@@ -16,22 +17,18 @@ string echo(string input){
                 output=output+input.at(i);
             }
         }
-        else if(input.at(i) == '"'){
+        else if((input.at(i) == '\"')||(input.at(i) == '\'')){  //enteres an element surrounded in quotes
             inQuotes=1;
-            quotesChar= '"';
+            quotesChar= input.at(i);
         }
-        else if(input.at(i) == '\''){
-            inQuotes=1;
-            quotesChar= '\'';
-        }
-        else if(input.at(i) == '#'){
+        else if(input.at(i) == '#'){    //recgnizes that the rest of the input is a commet and breaks from the loop
             break;
         }
-        else{
+        else{   //adds current char to the output string
             output=output+input.at(i);
         }
     }
-    return output;
+    return output; //returns output string
     
 }
 
@@ -42,7 +39,7 @@ int main()
     string home;
     string current;
     
-    string temp = "hello \'world\' # this should print hello world";
+    string temp = "hello \"world\" # this should print hello world";
     cout<<temp<<"\n\n";
     cout<<echo(temp);
     return 0;
