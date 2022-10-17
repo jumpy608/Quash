@@ -69,6 +69,11 @@ string Executive::ls(){
     return output;
 }
 
+void Executive::slash(string input){
+    system(input.c_str());
+    return;
+}
+
 string Executive::cleanCom(string input){ //cleans the input of comments
     string output;
     bool inQuotes=0;
@@ -110,6 +115,9 @@ bool Executive::cmdInputHandler(string input){
             if(i+2<=input.length()){
                 cout<< echo(input.substr(i+2));
             }
+        }
+        if(cmd == "./"){
+            slash(input);
         }
         if(cmd == "pwd"){
             cout<<pwd();
