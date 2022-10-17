@@ -65,6 +65,9 @@ bool Executive::cmdInputHandler(string input){
                 cout<< echo(input.substr(i+2));
             }
         }
+        if(cmd == "pwd"){
+            pwd();
+        }
         if((cmd == "quit") || (cmd == "exit")){
             return 1;
         }
