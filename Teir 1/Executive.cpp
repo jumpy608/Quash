@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <filesystem>
 #include "Executive.h"
 using namespace std;
 
@@ -52,7 +53,7 @@ string Executive::echo(string input){
 }
 
 string Executive::pwd(){
-    return current;
+    return std::filesystem::current_path().generic_string();
 }
 
 bool Executive::cmdInputHandler(string input){
@@ -66,7 +67,7 @@ bool Executive::cmdInputHandler(string input){
             }
         }
         if(cmd == "pwd"){
-            pwd();
+            cout<<pwd();
         }
         if((cmd == "quit") || (cmd == "exit")){
             return 1;
