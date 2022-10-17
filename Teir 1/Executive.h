@@ -13,6 +13,7 @@ class Executive{
         string current="";
 	    string echo(string input);
 	    string pwd();
+	    string ls();
 	    bool cmdInputHandler(string input);
         int run();
 };
