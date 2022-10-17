@@ -20,7 +20,7 @@ string Executive::echo(string input){
                 output=output+input.at(i);
             }
         }
-        if(inEnviromentVarName == 1){  //copys down enviroment var name
+        else if(inEnviromentVarName == 1){  //copys down enviroment var name
             if(input.at(i) == ' '){
                 inEnviromentVarName = 0; 
                 
@@ -55,6 +55,22 @@ string Executive::pwd(){
     return current;
 }
 
+bool Executive::cmdInputHandler(string input){
+    string cmd;
+    
+    for(int i=0; i<input.length(); i++){ //checks for first valid command then runs corrisponding fn
+        cmd=cmd + input.at(i); 
+        if(cmd == "echo"){
+            if(i+2<=input.length()){
+                cout<< echo(input.substr(i+2));
+            }
+        }
+        if((cmd == "quit") || (cmd == "exit")){
+            return 1;
+        }
+    }
+    return 0;
+}
 
 int Executive::run()
 {
@@ -63,5 +79,17 @@ int Executive::run()
     cout<<temp<<"\n\n";
     cout<<echo(temp);
     cout<<pwd();
+    bool quit=0;
+    string input;
+    
+    cout<<"\n\n Welcome...";
+    
+    while(quit == 0){ //runs shell waiting for user input
+        cout<<"\n[QUASH]$ "; 
+        getline(cin,input);
+        //cout<<input<<"\n\n";
+        quit=cmdInputHandler(input);
+    }
+    
     return 0;
 }
