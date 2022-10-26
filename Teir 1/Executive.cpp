@@ -169,6 +169,14 @@ bool Executive::cmdInputHandler(string input){
         if(cmd == "ls"){
             cout<<ls();
         }
+        if(cmd == "cd"){
+            if(i+2<=(int)input.length()){
+                cd(input.substr(i+2));
+            }
+            else{
+                cd("");
+            }
+        }
         if(cmd == "export"){
             if(i+2<=input.length()){
                 exportCMD(input.substr(i+2));
