@@ -16,6 +16,7 @@ class Executive{
 	    string ls();
 	    string cleanCom(string input);
 	    void slash(string input);
+	    void exportCMD(string input);
 	    bool cmdInputHandler(string input);
         int run();
 };

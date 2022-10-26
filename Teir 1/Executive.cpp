@@ -27,10 +27,13 @@ string Executive::echo(string input){
             if(input.at(i) == ' '){
                 inEnviromentVarName = 0; 
                 
+                //Print the current path of the Environmental Variable 
+                //
+                // echo $PATH -> Print the value of path
+                output = output + getenv(enviromentVarName).generic_string();
                 
-                //handle enviroment var here once we get to this point
+                //Remove temp EV name
                 enviromentVarName ="";
-                
             }
             else{
                 enviromentVarName=enviromentVarName+input.at(i);
@@ -42,6 +45,7 @@ string Executive::echo(string input){
         }
         else if(input.at(i) == '$'){    //switches mode to copy down enviroment var name
             inEnviromentVarName=1;
+            
         }
         else if(input.at(i) == '#'){    //recgnizes that the rest of the input is a commet and breaks from the loop
             break;
@@ -103,6 +107,10 @@ string Executive::cleanCom(string input){ //cleans the input of comments
     return output;
 }
 
+void Executive::exportCMD(string input){//Sets the value of an envirnomental variable.
+    
+}
+
 
 bool Executive::cmdInputHandler(string input){
     string cmd;
@@ -116,15 +124,22 @@ bool Executive::cmdInputHandler(string input){
                 cout<< echo(input.substr(i+2));
             }
         }
+        //SLASH command (run program)
         if(cmd == "./"){
             slash(input);
         }
+        //Prints the working directory
         if(cmd == "pwd"){
             cout<<pwd();
         }
+        //Lists the files within the current directory
         if(cmd == "ls"){
             cout<<ls();
         }
+        if(cmd == "export"){
+            cout<<exportCMD();
+        }
+        //Exit command(s)
         if((cmd == "quit") || (cmd == "exit")){
             return 1;
         }
