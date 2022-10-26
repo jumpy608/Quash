@@ -13,7 +13,7 @@ string Executive::echo(string input){
     string enviromentVarName;
     string output;
     
-    for(int i=0; i<input.length(); i++){
+    for(int i=0; i<(int)input.length(); i++){
         
         if(inQuotes == 1){  //checks if we exit the curent string in quotes before looking for other special chars
             if(input.at(i) == quotesChar){
@@ -116,7 +116,7 @@ string Executive::cleanCom(string input){ //cleans the input of comments
     bool inQuotes=0;
     char quotesChar;
     
-    for(int i=0; i<input.length(); i++){
+    for(int i=0; i<(int)input.length(); i++){
         
         if(inQuotes == 1){  //checks if we exit the curent string in quotes before looking for other special chars
             if(input.at(i) == quotesChar){
@@ -141,7 +141,28 @@ string Executive::cleanCom(string input){ //cleans the input of comments
 }
 
 void Executive::exportCMD(string input){//Sets the value of an envirnomental variable.
+       string LHS="";
+       string RHS="";
+       bool RHSVar=0;
+       bool side=1;
+       
+    for(int i=0; i<(int)input.length(); i++){ //parse input and return the elements to be exported
+        if(input.at(i) == '='){
+            side=0;
+            if(input.at(i+1) == '$'){
+                RHSVar=1;
+                i++;
+            }
+        }
+        else if(side){
+            LHS=LHS+input.at(i);
+        }
+        else{
+            RHS=RHS+input.at(i);
+        }
+    }
     
+    cout<<LHS<<"\t"<<RHS<<"\t"<<RHSVar;
 }
 
 
@@ -150,10 +171,10 @@ bool Executive::cmdInputHandler(string input){
     
     input=cleanCom(input);
     
-    for(int i=0; i<input.length(); i++){ //checks for first valid command then runs corrisponding fn
+    for(int i=0; i<(int)input.length(); i++){ //checks for first valid command then runs corrisponding fn
         cmd=cmd + input.at(i); 
         if(cmd == "echo"){
-            if(i+2<=input.length()){
+            if(i+2<=(int)input.length()){
                 cout<< echo(input.substr(i+2));
             }
         }
@@ -178,7 +199,7 @@ bool Executive::cmdInputHandler(string input){
             }
         }
         if(cmd == "export"){
-            if(i+2<=input.length()){
+            if(i+2<=(int)input.length()){
                 exportCMD(input.substr(i+2));
                 }
         }
