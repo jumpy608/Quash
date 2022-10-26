@@ -12,6 +12,8 @@ class Executive{
         string home;
         string current="";
 	    string echo(string input);
+	    void cd(string input);
+	    void dotdot(string input);
 	    string pwd();
 	    string ls();
 	    string cleanCom(string input);
