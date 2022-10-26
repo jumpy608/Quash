@@ -30,7 +30,7 @@ string Executive::echo(string input){
                 //Print the current path of the Environmental Variable 
                 //
                 // echo $PATH -> Print the value of path
-                output = output + getenv(enviromentVarName).generic_string();
+                output = output + getenv(enviromentVarName.c_str());
                 
                 //Remove temp EV name
                 enviromentVarName ="";
@@ -170,7 +170,9 @@ bool Executive::cmdInputHandler(string input){
             cout<<ls();
         }
         if(cmd == "export"){
-            cout<<exportCMD();
+            if(i+2<=input.length()){
+                exportCMD(input.substr(i+2));
+                }
         }
         //Exit command(s)
         if((cmd == "quit") || (cmd == "exit")){
