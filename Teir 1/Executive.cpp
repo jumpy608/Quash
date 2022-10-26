@@ -58,6 +58,39 @@ string Executive::echo(string input){
     
 }
 
+void Executive::cd(string input){
+    //cout<<input;
+    if(input == ".."){      
+        dotdot(pwd());
+    }
+}
+
+void Executive::dotdot(string input){
+    int finalslash=-1;
+    
+    for(int i=0; i<(int)input.length(); i++){
+        if(input.at(i) == '/'){
+            finalslash=i;
+        }
+    }
+    
+    if(finalslash!=-1){
+        //cout<<input.substr(0,finalslash);
+        if(finalslash == 0){
+            std::filesystem::current_path("/");
+        }
+        else{
+            std::filesystem::current_path(input.substr(0,finalslash));
+        }
+       
+    }
+    else{
+        cout<<"you should not be here";
+    }
+        
+    
+}
+
 string Executive::pwd(){
     return std::filesystem::current_path().generic_string();
 }
