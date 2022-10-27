@@ -5,7 +5,7 @@
 using namespace std;
 
 string Executive::echo(string input){
-    cout<<input;
+    //cout<<input;
     
     bool inQuotes = 0;
     char quotesChar;
@@ -53,6 +53,9 @@ string Executive::echo(string input){
         else{   //adds current char to the output string
             output=output+input.at(i);
         }
+    }
+    if(inEnviromentVarName){
+        output = output + getenv(enviromentVarName.c_str());
     }
     return output; //returns output string
     
@@ -161,8 +164,21 @@ void Executive::exportCMD(string input){//Sets the value of an envirnomental var
             RHS=RHS+input.at(i);
         }
     }
+    if(side){//If invalid syntax
+    return;
+    }
     
-    cout<<LHS<<"\t"<<RHS<<"\t"<<RHSVar;
+    if(RHSVar) {//If the RHS is an existing ENV
+        
+        //Get and Set the new ENV to the existing ENV's value
+        setenv(LHS.c_str(), getenv(RHS.c_str()), 1);
+    }
+    else{//Being given the directory
+        setenv(LHS.c_str(), RHS.c_str(), 0);
+    }
+    
+    
+    //cout<<LHS<<"\t"<<RHS<<"\t"<<RHSVar;
 }
 
 
