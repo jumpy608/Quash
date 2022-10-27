@@ -181,6 +181,14 @@ void Executive::exportCMD(string input){//Sets the value of an envirnomental var
     //cout<<LHS<<"\t"<<RHS<<"\t"<<RHSVar;
 }
 
+void Executive::jobs(){
+
+}
+
+void Executive::kill(int sigNUM, int pID){
+
+
+}
 
 bool Executive::cmdInputHandler(string input){
     string cmd;
