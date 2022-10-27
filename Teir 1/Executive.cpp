@@ -206,6 +206,7 @@ bool Executive::cmdInputHandler(string input){
         if(cmd == "ls"){
             cout<<ls();
         }
+        //Change working directory
         if(cmd == "cd"){
             if(i+2<=(int)input.length()){
                 cd(input.substr(i+2));
@@ -214,10 +215,17 @@ bool Executive::cmdInputHandler(string input){
                 cd("");
             }
         }
+        //Create a new ENV
         if(cmd == "export"){
             if(i+2<=(int)input.length()){
                 exportCMD(input.substr(i+2));
                 }
+        }
+        //Prints all currently running background processes
+        if(cmd == "jobs"){
+        }
+        //Send a POSIX signal and PID (both ints), send the signal to the given process.
+        if(cmd == "kill") {
         }
         //Exit command(s)
         if((cmd == "quit") || (cmd == "exit")){
