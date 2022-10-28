@@ -263,7 +263,7 @@ void Executive::execute(string input) {
     execlp(temp.c_str(), input.c_str(), NULL);
 }
 
-bool Executive::cmdInputHandler(string input){
+string Executive::cmdInputHandler(string input){
     string cmd;
     
     input=cleanCom(input);
@@ -272,20 +272,22 @@ bool Executive::cmdInputHandler(string input){
         cmd=cmd + input.at(i); 
         if(cmd == "echo"){
             if(i+2<=(int)input.length()){
-                cout<< echo(input.substr(i+2));
+                return echo(input.substr(i+2));
             }
+            return "";
         }
         //SLASH command (run program)
         if(cmd == "./"){
             slash(input);
+            return "";
         }
         //Prints the working directory
         if(cmd == "pwd"){
-            cout<<pwd();
+            return pwd();
         }
         //Lists the files within the current directory
-        if(cmd == "ls"){
-            cout<<ls();
+        if(cmd == "lss"){
+            return ls();
         }
         //Change working directory
         if(cmd == "cd"){
@@ -295,28 +297,34 @@ bool Executive::cmdInputHandler(string input){
             else{
                 cd();
             }
+            return "";
         }
         //Create a new ENV
         if(cmd == "export"){
             if(i+2<=(int)input.length()){
                 exportCMD(input.substr(i+2));
                 }
+            return "";
         }
-        //Prints all currently running background processes
+        //Prints all currently running ba	    void execute(string input);ckground processes
         if(cmd == "jobs"){
+            return "";
         }
         //Send a POSIX signal and PID (both ints), send the signal to the given process.
         if(cmd == "kill") {
             if(i+2<=(int)input.length()){
                 killhandler(input.substr(i+1));
             }
+            return "";
         }
         //Exit command(s)
         if((cmd == "quit") || (cmd == "exit")){
-            return 1;
+            exit(0);
+            return "";
         }
     }
-    return 0;
+    execute(input);
+    return "";
 }
 
 /*
@@ -419,7 +427,7 @@ int Executive::run()
         cout<<"\n[QUASH]$ "; 
         getline(cin,input);
         //cout<<input<<"\n\n";
-        quit=cmdInputHandler(input);
+        cout<<cmdInputHandler(input);
     }
     
     return 0;
