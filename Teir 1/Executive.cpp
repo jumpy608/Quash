@@ -2,6 +2,7 @@
 #include <string.h>
 #include <filesystem>
 #include "Executive.h"
+#include <fstream>
 using namespace std;
 
 //Define pre-existing Environmental Variables.
@@ -70,6 +71,15 @@ void Executive::cd(string input){
     if(input == ".."){      
         dotdot(pwd());
     }
+    else if(input.at(0) == '$'){
+        if(input.length()>1){
+            std::filesystem::current_path(getenv(input.substr(1,input.length()).c_str()));
+        }
+    }
+}
+
+void Executive::cd(){
+    std::filesystem::current_path(getenv("HOME"));
 }
 
 void Executive::dotdot(string input){
@@ -122,25 +132,30 @@ string Executive::cleanCom(string input){ //cleans the input of comments
     string output;
     bool inQuotes=0;
     char quotesChar;
+    bool wsc=1;
     
     for(int i=0; i<(int)input.length(); i++){
-        
-        if(inQuotes == 1){  //checks if we exit the curent string in quotes before looking for other special chars
-            if(input.at(i) == quotesChar){
-                inQuotes = 0;
+        if((input.at(i) == ' ')&&(wsc)){
+        }
+        else{
+            wsc=0;
+            if(inQuotes == 1){  //checks if we exit the curent string in quotes before looking for other special chars
+                if(input.at(i) == quotesChar){
+                    inQuotes = 0;
+                }
+                output=output+input.at(i);
             }
-            output=output+input.at(i);
-        }
-        else if((input.at(i) == '\"')||(input.at(i) == '\'')){  //enteres an element surrounded in quotes
-            inQuotes=1;
-            quotesChar= input.at(i);
-            output=output+input.at(i);
-        }
-        else if(input.at(i) == '#'){    //recgnizes that the rest of the input is a commet and breaks from the loop
-            break;
-        }
-        else{   //adds current char sideto the output string
-            output=output+input.at(i);
+            else if((input.at(i) == '\"')||(input.at(i) == '\'')){  //enteres an element surrounded in quotes
+                inQuotes=1;
+                quotesChar= input.at(i);
+                output=output+input.at(i);
+            }
+            else if(input.at(i) == '#'){    //recgnizes that the rest of the input is a commet and breaks from the loop
+                break;
+            }
+            else{   //adds current char to the output string
+                output=output+input.at(i);
+            }
         }
     }
     
@@ -214,6 +229,28 @@ void Executive::jobs(){
 
 }
 
+void Executive::killhandler(string input){
+    string LHS="";
+    string RHS="";
+    bool side=1;
+       
+    for(int i=0; i<(int)input.length(); i++){ //parse input and return the elements to be exported
+        if(input.at(i) == ' '){
+            side=0;
+        }
+        else if(side){
+            LHS=LHS+input.at(i);
+        }
+        else{
+            RHS=RHS+input.at(i);
+        }
+    }
+    if(side){//If invalid syntax
+    return;
+    }
+    kill(stoi(LHS),stoi(RHS));
+}
+
 void Executive::kill(int sigNUM, int pID){
 
 
@@ -246,10 +283,10 @@ bool Executive::cmdInputHandler(string input){
         //Change working directory
         if(cmd == "cd"){
             if(i+2<=(int)input.length()){
-                cd(input.substr(i+2));
+                cd(input.substr(i+1));
             }
             else{
-                cd("");
+                cd();
             }
         }
         //Create a new ENV
