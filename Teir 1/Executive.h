@@ -25,5 +25,10 @@ class Executive{
 	    void kill(int sigNUM, int pID);
 	    bool cmdInputHandler(string input);
         int run();
+        
+        void checkBros(string input);
+        string read(string filename);
+        void write(string filename, string input);
+        void append(string filename, string input);
 };
 #endif
