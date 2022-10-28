@@ -300,6 +300,9 @@ bool Executive::cmdInputHandler(string input){
         }
         //Send a POSIX signal and PID (both ints), send the signal to the given process.
         if(cmd == "kill") {
+            if(i+2<=(int)input.length()){
+                killhandler(input.substr(i+1));
+            }
         }
         //Exit command(s)
         if((cmd == "quit") || (cmd == "exit")){
@@ -307,6 +310,16 @@ bool Executive::cmdInputHandler(string input){
         }
     }
     return 0;
+}
+
+void Executive::checkBros(string input){
+}
+string Executive::read(string filename){
+    return "";
+}
+void Executive::write(string filename, string input){
+}
+void Executive::append(string filename, string input){
 }
 
 int Executive::run()
