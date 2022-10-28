@@ -83,7 +83,7 @@ void Executive::cd(string input){
 
 void Executive::cd(){
     std::filesystem::current_path(getenv("HOME"));
-}
+} 
 
 void Executive::dotdot(string input){
     int finalslash=-1;
