@@ -13,6 +13,7 @@ class Executive{
         string current="";
 	    string echo(string input);
 	    void cd(string input);
+	    void cd();
 	    void dotdot(string input);
 	    string pwd();
 	    string ls();
@@ -20,6 +21,7 @@ class Executive{
 	    void slash(string input);
 	    void exportCMD(string input);
 	    void jobs();
+	    void killhandler(string input);
 	    void kill(int sigNUM, int pID);
 	    bool cmdInputHandler(string input);
         int run();
