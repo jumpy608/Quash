@@ -152,8 +152,7 @@ string Executive::cleanCom(string input){ //cleans the input of comments
                 quotesChar= input.at(i);
                 output=output+input.at(i);
             }
-            else if(input.at(i) == '#'){    //recgnizes that the rest of the input is a com#include <unistd.h>
-#include <sys/wait.h>met and breaks from the loop
+            else if(input.at(i) == '#'){    //recgnizes that the rest of the input is a commet and breaks from the loop
                 break;
             }
             else{   //adds current char to the output string
