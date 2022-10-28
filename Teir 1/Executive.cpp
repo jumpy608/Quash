@@ -266,6 +266,24 @@ void Executive::execute(string input) {
     perror("fork");
     }
     else if (child_pid == 0){
+    
+        string LHS="";
+        string RHS="";
+        bool RHSVar=0;
+        bool side=1;
+           
+        for(int i=0; i<(int)input.length(); i++){ //split first element from string
+            if(input.at(i) == ' '){
+                side=0;
+            }
+            else if(side){
+                LHS=LHS+input.at(i);
+            }
+            else{
+                RHS=RHS+input.at(i);
+            }
+        }
+    
         string temp = "/bin/" + input;
         execlp(temp.c_str(), input.c_str(), NULL);
         return;
