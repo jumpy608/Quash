@@ -21,7 +21,7 @@ class Executive{
 	    void slash(string input);
 	    void exportCMD(string input);
 	    void jobs();
-	    void exec(string input);
+	    void execute(string input);
 	    void killhandler(string input);
 	    void kill(int sigNUM, int pID);
 	    bool cmdInputHandler(string input);
