@@ -4,6 +4,11 @@
 #include "Executive.h"
 using namespace std;
 
+//Define pre-existing Environmental Variables.
+string currDirect;//$PWD
+string homeDirect;//$HOME
+string pathDirect;//$PATH
+
 string Executive::echo(string input){
     //cout<<input;
     
@@ -31,7 +36,6 @@ string Executive::echo(string input){
                 //
                 // echo $PATH -> Print the value of path
                 output = output + getenv(enviromentVarName.c_str());
-                
                 //Remove temp EV name
                 enviromentVarName ="";
             }
@@ -135,7 +139,7 @@ string Executive::cleanCom(string input){ //cleans the input of comments
         else if(input.at(i) == '#'){    //recgnizes that the rest of the input is a commet and breaks from the loop
             break;
         }
-        else{   //adds current char to the output string
+        else{   //adds current char sideto the output string
             output=output+input.at(i);
         }
     }
@@ -164,21 +168,46 @@ void Executive::exportCMD(string input){//Sets the value of an envirnomental var
             RHS=RHS+input.at(i);
         }
     }
+    
+    //
     if(side){//If invalid syntax
     return;
     }
-    
     if(RHSVar) {//If the RHS is an existing ENV
-        
+    
         //Get and Set the new ENV to the existing ENV's value
         setenv(LHS.c_str(), getenv(RHS.c_str()), 1);
+        
+        if(LHS == "PWD") {//Rewriting the existing PWD with existing ENVIRONMENTAL VAR
+            currDirect = getenv("PWD");
+        }
+        else if(LHS == "HOME"){//Rewriting the existing HOME with existing ENVIRONMENTAL VAR
+            homeDirect = getenv("HOME");
+        }
+        else if(LHS == "PATH"){//Rewriting the existing PATH with existing ENVIRONMENTAL VAR
+            pathDirect = getenv("PATH");
+        }
     }
     else{//Being given the directory
-        setenv(LHS.c_str(), RHS.c_str(), 0);
+        
+        
+        
+        if(LHS == "PWD") {//Rewriting the existing PWD with existing ENVIRONMENTAL VAR
+            currDirect = setenv(LHS.c_str(), RHS.c_str(), 1);;
+        }
+        else if(LHS == "HOME"){//Rewriting the existing HOME with existing ENVIRONMENTAL VAR
+            homeDirect = setenv(LHS.c_str(), RHS.c_str(), 1);
+        }
+        else if(LHS == "PATH"){//Rewriting the existing PATH with existing ENVIRONMENTAL VAR
+            pathDirect = setenv(LHS.c_str(), RHS.c_str(), 1);
+        }
+        else{//All other inputs
+            setenv(LHS.c_str(), RHS.c_str(), 1);
+        }
     }
     
     
-    //cout<<LHS<<"\t"<<RHS<<"\t"<<RHSVar;
+    cout<<LHS<<"\t"<<RHS<<"\t"<<RHSVar;
 }
 
 void Executive::jobs(){
@@ -252,6 +281,11 @@ int Executive::run()
     cout<<pwd();
     bool quit=0;
     string input;
+    
+    //Init existing Environmental Variables.
+    currDirect = getenv("PWD");
+    homeDirect = getenv("HOME");
+    pathDirect = getenv("PATH");
     
     cout<<"\n\n Welcome...";
     
