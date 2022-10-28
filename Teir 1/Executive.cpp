@@ -5,7 +5,6 @@
 #include <fstream>
 #include <unistd.h>
 #include <sys/wait.h>
-
 using namespace std;
 
 //Define pre-existing Environmental Variables.
@@ -83,7 +82,7 @@ void Executive::cd(string input){
 
 void Executive::cd(){
     std::filesystem::current_path(getenv("HOME"));
-} 
+}
 
 void Executive::dotdot(string input){
     int finalslash=-1;
@@ -153,7 +152,8 @@ string Executive::cleanCom(string input){ //cleans the input of comments
                 quotesChar= input.at(i);
                 output=output+input.at(i);
             }
-            else if(input.at(i) == '#'){    //recgnizes that the rest of the input is a commet and breaks from the loop
+            else if(input.at(i) == '#'){    //recgnizes that the rest of the input is a com#include <unistd.h>
+#include <sys/wait.h>met and breaks from the loop
                 break;
             }
             else{   //adds current char to the output string
@@ -320,23 +320,92 @@ bool Executive::cmdInputHandler(string input){
     return 0;
 }
 
+/*
 void Executive::checkBros(string input){
+    bool print=1;
+    char cmd="";
+    string LHS;
+    string RHS;
+    
+    for(int i=0; i<(int)input.length(); i++){ //parse input and return the elements to be exported
+        if((input.at(i) == '<')||(input.at(i) == '<')||(input.at(i) == '<')){
+            side=0;
+        }
+        else if(side){
+            LHS=LHS+input.at(i);
+        }
+        else{
+            RHS=RHS+input.at(i);
+        }
+    }
+    if(side){
+    return;
+    }
+    
+    if(print){
+        cout<<cmdInputHandler(RHS);
+    }
 }
+*/
+
 string Executive::read(string filename){
-    return "";
+    string tempRead;
+    string output="";
+    bool first=1;
+    
+    ifstream f(filename);  //prints file 
+    if(f.is_open()){
+        while(getline(f, tempRead)){
+            if(first){
+                first=0;
+                output=output+tempRead;
+            }
+            else{
+                output=output+"\n"+tempRead;
+            }
+        }
+        f.close();
+        
+    }
+    return output;
 }
+
 void Executive::write(string filename, string input){
+    string tempRead;
+    string output="";
+    ofstream f(filename);  //prints file 
+    if(f.is_open()){
+        f << input;
+        f.close();
+        
+    }
+    return;
 }
+
 void Executive::append(string filename, string input){
+    string tempRead;
+    string output="";
+    ofstream f(filename,ios::app);  //prints file 
+    if(f.is_open()){
+        f << input;
+        f.close();
+        
+    }
+    return;
 }
 
 int Executive::run()
 {
-    
+    /*
     string temp = "hello \"world\" # this should print hello world";
     cout<<temp<<"\n\n";
     cout<<echo(temp);
     cout<<pwd();
+    execute("ls");
+    */
+    cout<<read("file.txt");
+    write("a.txt", read("file.txt"));
+    append("b.txt", read("file.txt"));
     bool quit=0;
     string input;
     
@@ -344,7 +413,6 @@ int Executive::run()
     currDirect = getenv("PWD");
     homeDirect = getenv("HOME");
     pathDirect = getenv("PATH");
-    execute("ls");
     
     cout<<"\n\n Welcome...";
     
