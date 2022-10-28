@@ -3,6 +3,9 @@
 #include <filesystem>
 #include "Executive.h"
 #include <fstream>
+#include <unistd.h>
+#include <sys/wait.h>
+
 using namespace std;
 
 //Define pre-existing Environmental Variables.
@@ -256,6 +259,11 @@ void Executive::kill(int sigNUM, int pID){
 
 }
 
+void Executive::execute(string input) {
+    string temp = "/bin/" + input;
+    execlp(temp.c_str(), input.c_str(), NULL);
+}
+
 bool Executive::cmdInputHandler(string input){
     string cmd;
     
@@ -336,6 +344,7 @@ int Executive::run()
     currDirect = getenv("PWD");
     homeDirect = getenv("HOME");
     pathDirect = getenv("PATH");
+    execute("ls");
     
     cout<<"\n\n Welcome...";
     
