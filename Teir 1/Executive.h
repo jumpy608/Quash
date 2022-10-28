@@ -24,7 +24,7 @@ class Executive{
 	    void execute(string input);
 	    void killhandler(string input);
 	    void kill(int sigNUM, int pID);
-	    bool cmdInputHandler(string input);
+	    string cmdInputHandler(string input);
         int run();
         
         void checkBros(string input);
