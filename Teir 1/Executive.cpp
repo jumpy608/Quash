@@ -259,8 +259,23 @@ void Executive::kill(int sigNUM, int pID){
 }
 
 void Executive::execute(string input) {
-    string temp = "/bin/" + input;
-    execlp(temp.c_str(), input.c_str(), NULL);
+    pid_t child_pid = fork();
+    
+    if (child_pid == -1) {
+    
+    perror("fork");
+    }
+    else if (child_pid == 0){
+        string temp = "/bin/" + input;
+        execlp(temp.c_str(), input.c_str(), NULL);
+        return;
+    }
+    else {
+    wait(NULL);
+    
+    }
+    
+    
 }
 
 string Executive::cmdInputHandler(string input){
