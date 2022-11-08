@@ -104,7 +104,7 @@ void Executive::dotdot(string input){
        
     }
     else{
-        cout<<"you should not be here";
+        //cout<<"you should not be here";
     }
         
     
@@ -224,7 +224,7 @@ void Executive::exportCMD(string input){//Sets the value of an envirnomental var
     }
     
     
-    cout<<LHS<<"\t"<<RHS<<"\t"<<RHSVar;
+    //cout<<LHS<<"\t"<<RHS<<"\t"<<RHSVar;
 }
 
 void Executive::jobs(){
