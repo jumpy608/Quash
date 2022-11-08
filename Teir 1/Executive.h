@@ -34,5 +34,8 @@ class Executive{
         bool istextfile(string input);
         string removews(string input);
         
+        void toprintornottoprint(string input);
+        bool iscat(string input);
+        
 };
 #endif
