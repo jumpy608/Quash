@@ -271,7 +271,7 @@ void Executive::execute(string input) {
     
         char* args[64];
         int elements=0;
-        string temp;
+        string temp[64];
         bool whitespace=0;
         bool first=1;
         string bin="";
@@ -280,31 +280,34 @@ void Executive::execute(string input) {
             if(input.at(i) == ' '){
                 if(!whitespace){
                     whitespace=1;
-                    args[elements]=(char*)temp.c_str();
-                    cout<<args[elements];
+                    args[elements]=(char*)temp[elements].c_str();
+                    //cout<<args[elements];
                     elements++;
                     if(first){
                         first=0;
-                        bin="/bin/" +temp;
+                        bin="/bin/" +temp[0];
                     }
-                    temp="";
                 }
                 
             }
             else{
                 whitespace=0;
-                temp=temp+input.at(i);
+                temp[elements]=temp[elements]+input.at(i);
             }
         }
         
-        args[elements]=(char*)temp.c_str();
-        cout<<args[elements];
+        args[elements]=(char*)temp[elements].c_str();
+        //cout<<args[elements]<<"\n";
         elements++;
+        
+        if(elements == 1){
+            bin="/bin/" +temp[0];
+        }
         
         for(int i=elements; i< 64; i++){
             args[i]=NULL;
         }
-    
+        
         execvp(bin.c_str(), args);
         return;
     }
