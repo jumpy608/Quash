@@ -27,9 +27,12 @@ class Executive{
 	    string cmdInputHandler(string input);
         int run();
         
-        void checkBros(string input);
+        void cat(string input);
         string read(string filename);
         void write(string filename, string input);
         void append(string filename, string input);
+        bool istextfile(string input);
+        string removews(string input);
+        
 };
 #endif
