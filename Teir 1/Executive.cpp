@@ -70,7 +70,8 @@ string Executive::echo(string input){
 
 void Executive::cd(string input){
     //cout<<input;
-    if(input == ".."){      
+    input=removews(input);
+    if((input == "..")||(input == "-")){      
         dotdot(pwd());
     }
     else if(input.at(0) == '$'){
