@@ -267,25 +267,38 @@ void Executive::execute(string input) {
     }
     else if (child_pid == 0){
     
-        string LHS="";
-        string RHS="";
-        bool RHSVar=0;
-        bool side=1;
-           
+        //This part builds the array of args
+    
+        char* args[64];
+        int elements=0;
+        string temp;
+        bool whitespace=0;
+        
         for(int i=0; i<(int)input.length(); i++){ //split first element from string
             if(input.at(i) == ' '){
-                side=0;
-            }
-            else if(side){
-                LHS=LHS+input.at(i);
+                if(!whitespace){
+                    whitespace=1;
+                    args[elements]=(char*)temp.c_str();
+                    cout<<args[elements];
+                    elements++;
+                    temp="";
+                }
+                
             }
             else{
-                RHS=RHS+input.at(i);
+                whitespace=0;
+                temp=temp+input.at(i);
             }
         }
+        args[elements]=(char*)temp.c_str();
+        cout<<args[elements];
+        elements++;
+        args[elements]=(char*)"\0";
     
-        string temp = "/bin/" + input;
-        execlp(temp.c_str(), input.c_str(), NULL);
+        //This ends building the array of args
+    
+        string bin="/bin/" + (string)args[0];
+        execvp(bin.c_str(), args);
         return;
     }
     else {
@@ -339,6 +352,13 @@ string Executive::cmdInputHandler(string input){
                 }
             return "";
         }
+        //messes with files with cat
+        if(cmd == "cat"){
+            if(i+2<=(int)input.length()){
+                cat(input.substr(i+2));
+                }
+            return "";
+        }
         //Prints all currently running ba	    void execute(string input);ckground processes
         if(cmd == "jobs"){
             return "";
@@ -360,16 +380,58 @@ string Executive::cmdInputHandler(string input){
     return "";
 }
 
-/*
-void Executive::checkBros(string input){
-    bool print=1;
-    char cmd="";
+
+void Executive::cat(string input){
+    bool side=1;
+    int cmd=0;
+    int cmdindex=0;
+    string cmdtext="";
     string LHS;
     string RHS;
     
+    // < file.txt read from file
+    // file1.txt >> file2.txt append file1 output to file2 
+    // input.txt > file.txt
+    // | pipeing
+    // lhs cmd rhs cmd2 in
+    // if cmd2 != null cat rhs cmd2 in
+    
     for(int i=0; i<(int)input.length(); i++){ //parse input and return the elements to be exported
-        if((input.at(i) == '<')||(input.at(i) == '<')||(input.at(i) == '<')){
-            side=0;
+        if((input.at(i) == '<')||(input.at(i) == '|')||(input.at(i) == '>')){
+            
+            if(cmd==0){
+                side=0;
+                cmd++;
+                
+                if(input.at(i) == '<'){
+                    cmdtext="<";
+                }
+                if(input.at(i) == '>'){
+                    if((i+1)<(int)input.length()){
+                        if(input.at(i+1) == '>'){
+                            i++;
+                            cmdtext=">>";
+                        }
+                        else{
+                            cmdtext=">";
+                        }
+                    }
+                    else{
+                        cmdtext=">";
+                    }
+                }
+                if(input.at(i) == '|'){
+                    cmdtext="|"; //we dont have pipeing yet but If we did we we know to do it here
+                }
+                
+            }
+            else if(cmd==1){
+                cmd++;
+                cmdindex=i;
+                break;
+                
+            }
+            
         }
         else if(side){
             LHS=LHS+input.at(i);
@@ -378,15 +440,63 @@ void Executive::checkBros(string input){
             RHS=RHS+input.at(i);
         }
     }
-    if(side){
-    return;
+    
+
+    
+    LHS=removews(LHS);
+    RHS=removews(RHS);
+    
+    
+    //cout<<"\n\n"<<side<<" "<<cmd<<" "<<cmdindex<<" "<<cmdtext<<" "<<LHS<<" "<<RHS<<" "<<"\n\n";
+    
+    if(cmdtext==">>"){
+        //cout<<"append";
+        if(istextfile(LHS)){
+            append(RHS,read(LHS));
+        }
+        else{
+            append(RHS,LHS);
+        }
+    }
+    if(cmdtext==">"){
+        //cout<<"Write";
+        if(istextfile(LHS)){
+            write(RHS,read(LHS));
+        }
+        else{
+            write(RHS,LHS);
+        }
+    }
+    if(cmdtext=="<"){
+        //cout<<"Read";
+        cout<<read(RHS);
     }
     
-    if(print){
-        cout<<cmdInputHandler(RHS);
+    if(cmd==0){
+        cout<<read(input);
     }
+    if(cmd==2){
+        cat(RHS+input.substr(cmdindex));
+    }
+
+    
 }
-*/
+
+bool Executive::istextfile(string filename){
+    return((int)filename.find(".txt") != -1);
+}
+
+string Executive::removews(string input){
+    string output="";
+    for(int i=0; i<(int)input.length(); i++){
+        if(input.at(i) == ' '){
+        }
+        else{
+            output=output + input.at(i);
+        }
+    }
+    return output;
+}
 
 string Executive::read(string filename){
     string tempRead;
@@ -406,7 +516,7 @@ string Executive::read(string filename){
         }
         f.close();
         
-    }
+    }<<" "
     return output;
 }
 
@@ -443,9 +553,11 @@ int Executive::run()
     cout<<pwd();
     execute("ls");
     */
+    /*
     cout<<read("file.txt");
     write("a.txt", read("file.txt"));
     append("b.txt", read("file.txt"));
+    */
     bool quit=0;
     string input;
     
