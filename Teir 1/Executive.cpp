@@ -321,8 +321,7 @@ void Executive::execute(string input) {
 
 string Executive::cmdInputHandler(string input){
     string cmd;
-    
-    input=cleanCom(input);
+   
     
     for(int i=0; i<(int)input.length(); i++){ //checks for first valid command then runs corrisponding fn
         cmd=cmd + input.at(i); 
@@ -554,6 +553,45 @@ void Executive::append(string filename, string input){
     return;
 }
 
+void Executive::toprintornottoprint(string input){
+    string RHS;
+    string LHS;
+    if(iscat(input)){
+        cout<<cmdInputHandler(input);
+        return;
+    }
+    for(int i=(int)input.length()-1; i>0; i--){
+        if(input.at(i)=='>'){
+            if(input.at(i-1)=='>'){
+                if((i>0)&&(i<((int)input.length()-1))){
+                    append(removews(input.substr(i+1)),cmdInputHandler(input.substr(0,i-1)));
+                }
+            }
+            else if ((i>0)&&(i<((int)input.length()-1))){
+                write(removews(input.substr(i+1)),cmdInputHandler(input.substr(0,i-1)));
+            }
+            return;
+        }
+    }
+    cout<<cmdInputHandler(input);
+    return;
+    
+    //if its >> or > write instead of print
+}
+
+bool Executive::iscat(string input){
+    string cmd;
+    
+    for(int i=0; i<(int)input.length(); i++){ //checks for first valid command then runs corrisponding fn
+        cmd=cmd + input.at(i); 
+        if(cmd == "cat"){
+            return 1;
+        }
+    }
+    return 0;
+
+}
+
 int Executive::run()
 {
     /*
@@ -582,7 +620,7 @@ int Executive::run()
         cout<<"\n[QUASH]$ "; 
         getline(cin,input);
         //cout<<input<<"\n\n";
-        cout<<cmdInputHandler(input);
+        toprintornottoprint(cleanCom(input));
     }
     
     return 0;
