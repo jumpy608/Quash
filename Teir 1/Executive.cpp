@@ -273,6 +273,8 @@ void Executive::execute(string input) {
         int elements=0;
         string temp;
         bool whitespace=0;
+        bool first=1;
+        string bin="";
         
         for(int i=0; i<(int)input.length(); i++){ //split first element from string
             if(input.at(i) == ' '){
@@ -281,6 +283,10 @@ void Executive::execute(string input) {
                     args[elements]=(char*)temp.c_str();
                     cout<<args[elements];
                     elements++;
+                    if(first){
+                        first=0;
+                        bin="/bin/" +temp;
+                    }
                     temp="";
                 }
                 
@@ -290,14 +296,15 @@ void Executive::execute(string input) {
                 temp=temp+input.at(i);
             }
         }
+        
         args[elements]=(char*)temp.c_str();
         cout<<args[elements];
         elements++;
-        args[elements]=(char*)"\0";
+        
+        for(int i=elements; i< 64; i++){
+            args[i]=NULL;
+        }
     
-        //This ends building the array of args
-    
-        string bin="/bin/" + (string)args[0];
         execvp(bin.c_str(), args);
         return;
     }
@@ -516,7 +523,7 @@ string Executive::read(string filename){
         }
         f.close();
         
-    }<<" "
+    }
     return output;
 }
 
